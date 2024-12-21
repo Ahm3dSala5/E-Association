@@ -6,9 +6,7 @@ namespace E_Association.Core.Mapping.Withdrawal
     {
         public WithdrawalProfile()
         {
-            AddStartwithdrawalsMapping();
             AddUpdatewithdrawalsMapping();
-            AddCalncelationWithdrwalsMapping();
             AddGetWithdrawalsDetailsMapping();
             AddGetAllwithdrawalsMapping();
             AddGetUserwithdrawalsMapping();

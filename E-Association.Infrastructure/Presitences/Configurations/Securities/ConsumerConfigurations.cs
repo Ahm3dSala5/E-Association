@@ -5,17 +5,17 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Presitences.Configurations.Securities
 {
-    public class ApplicationUserConfigurations : IEntityTypeConfiguration<ApplicationUser>
+    public class ConsumerConfigurations : IEntityTypeConfiguration<Consumer>
     {
-        public void Configure(EntityTypeBuilder<ApplicationUser> builder)
+        public void Configure(EntityTypeBuilder<Consumer> builder)
         {
-            builder.ToTable("Users").HasKey(x => x.Id);
+            builder.ToTable("Consumer").HasKey(x => x.Id);
             builder.Property(x => x.Id).HasColumnType("uniqueidentifier").ValueGeneratedOnAdd();
 
             builder.HasMany(u => u.SubScriptions)
                 .WithMany(s => s.Users)
-                .UsingEntity<UserSubscriptions>(
-                    join => join.HasOne(us => us.SubScription)
+                .UsingEntity<ConsumerAssociations>(
+                    join => join.HasOne(us => us.Association)
                                 .WithMany(s => s.UserSubscriptions)
                                 .HasForeignKey(us => us.SubscriptionId),
                     join => join.HasOne(us => us.User)
@@ -25,7 +25,7 @@ namespace Presitences.Configurations.Securities
 
             builder.HasOne(x => x.Balance)
                 .WithOne(x => x.User)
-                .HasForeignKey<ApplicationUser>(x => x.BalanceId)
+                .HasForeignKey<Consumer>(x => x.BalanceId)
                 .IsRequired(false);
         }
     }

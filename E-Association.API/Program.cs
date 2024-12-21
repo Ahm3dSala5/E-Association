@@ -29,7 +29,7 @@ builder.Services.AddDbContext<AppDbContext>(options=>options.UseSqlServer(connet
 
 
 // register Identity
-builder.Services.AddIdentity<ApplicationUser, ApplicationRole>()
+builder.Services.AddIdentity<Consumer, ApplicationRole>()
                  .AddEntityFrameworkStores<AppDbContext>()
                   .AddDefaultTokenProviders();
 

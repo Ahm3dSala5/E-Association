@@ -11,11 +11,6 @@ namespace E_Association.Core.Mapping.Transaction
             CreateMap<Transactions, StartTransactionCommand>();
         }
 
-        public void AddDeleteTransactionMapping()
-        {
-            CreateMap<Transactions,DeleteTransactionCommand>();
-        }
-
         public void AddUpdateTransactionMapping()
         {
             CreateMap<Transactions, UpdateTransactionCommand>();

@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 namespace E_Association.Infrastructure.Presitence.Data
 {
-    public class AppDbContext : IdentityDbContext<ApplicationUser, IdentityRole<Guid>, Guid>
+    public class AppDbContext : IdentityDbContext<Consumer, IdentityRole<Guid>, Guid>
     {
 
         public AppDbContext(DbContextOptions<AppDbContext> _options) :base(_options)
@@ -17,14 +17,14 @@ namespace E_Association.Infrastructure.Presitence.Data
            
         }
 
-        public DbSet<ApplicationUser> users { set; get; }
+        public DbSet<Consumer> users { set; get; }
         public DbSet<Balance> Balances { set; get; }
         public DbSet<Transactions> Transactions { set; get; }
         public DbSet<Association> Associations { set; get; }
         public DbSet<Payment> Payments { set; get; }
         public DbSet<Withdrawals> Withdrawals { set; get; }
         public DbSet<Notifications> Notifications { set; get; }
-        public DbSet<UserSubscriptions> UserSubscriptions { get; set; }
+        public DbSet<ConsumerAssociations> ConsumerAssociations { get; set; }
         public DbSet<Deposit> Deposits { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

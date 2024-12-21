@@ -9,14 +9,14 @@ namespace E_Association.Core.Application.Mapping.Users
     {
         public UserProfile()
         {
-            CreateMap<RegistrationDTO, ApplicationUser>()
+            CreateMap<RegistrationDTO, Consumer>()
              .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.UserName))
              .ForMember(dest => dest.PasswordHash, opt => opt.MapFrom(src => src.Password))
              .ForMember(dest => dest.Address, opt => opt.MapFrom(src => src.Address))
              .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email));
 
             // Add this mapping for CreateUserCommandQuery to ApplicationUser
-            CreateMap<RegisterUserCommand, ApplicationUser>()
+            CreateMap<RegisterUserCommand, Consumer>()
                 .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.UserName))
                 .ForMember(dest => dest.PasswordHash, opt => opt.MapFrom(src => src.Password))
                 .ForMember(dest => dest.Address, opt => opt.MapFrom(src => src.Address))

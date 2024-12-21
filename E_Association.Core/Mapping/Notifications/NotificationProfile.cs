@@ -6,14 +6,9 @@ namespace E_Association.Core.Mapping.Notification
     {
         public NotificationProfile()
         {
-            AddCreateNotificationMapping();
-            AddDeleteNotificationMapping();
-            AddUpdateNotificationsMapping();
+            
             AddGetUserNotificationsMapping();
-            AddSendNotificationToUserMapping();
             AddGetAssociationNotificationsMapping();
-            AddSendNotificationToAllUserCommandMapping();
-            AddSendNotificationToAssociationConsumersMapping();
         }
     }
 }

@@ -8,8 +8,8 @@ namespace Domain.Entities.Business
         public decimal Salary { set; get; }
         public DateTime StartedAt { set; get; }
         public Guid ?UserId { set; get; }
-        public Guid BalanceId { set; get; }
-        public Balance Balance { set; get; }
-        public ApplicationUser? User { set; get; }
+        public Guid ?BalanceId { set; get; }
+        public Balance ? Balance { set; get; }
+        public Consumer? User { set; get; }
     }
 }

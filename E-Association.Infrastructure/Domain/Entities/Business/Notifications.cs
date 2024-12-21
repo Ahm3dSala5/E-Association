@@ -9,10 +9,8 @@ namespace Domain.Entities.Business
         public string Message { set; get; }
         public DateTime CreatedAt { set; get; }
         public Guid? UserId { set; get; }
-        public ApplicationUser ?User { set; get; }
-
+        public Consumer ?User { set; get; }
         public ICollection<Association> Subscriptions { set; get; } = new List<Association>();
-        public ICollection<SubscriptionNotifications> SubscriptionNotifications { set; get; } = new List<SubscriptionNotifications>();
-
+        public ICollection<AssociationNotifications> SubscriptionNotifications { set; get; } = new List<AssociationNotifications>();
     }
 }

@@ -7,13 +7,13 @@ namespace E_Association.Service.AssociationServices.Userservice
 {
     public class ConsumerService : IConsumerService
     {
-        private UserManager<ApplicationUser> _userManager;
-        public ConsumerService(UserManager<ApplicationUser> userManager)
+        private UserManager<Consumer> _userManager;
+        public ConsumerService(UserManager<Consumer> userManager)
         {
             _userManager = userManager;
         }
 
-        public async ValueTask<IEnumerable<ApplicationUser>> Paginationsync(int numPage, int itemPerPage)
+        public async ValueTask<IEnumerable<Consumer>> Paginationsync(int numPage, int itemPerPage)
         {
             var Users = await _userManager.Users.ToListAsync();
             if (Users is null)
@@ -25,7 +25,7 @@ namespace E_Association.Service.AssociationServices.Userservice
             return Users.Skip(skiped).Take(itemPerPage);
         }
 
-        public async ValueTask<ApplicationUser> GetOneAsync(string userName)
+        public async ValueTask<Consumer> GetOneAsync(string userName)
         {
             if (userName is null)
                 throw new Exception("User Not Found");
@@ -35,7 +35,7 @@ namespace E_Association.Service.AssociationServices.Userservice
                 throw new Exception("User Not Found");
             return user;
         }
-        public async ValueTask<List<ApplicationUser>> GetAllUserAsync()
+        public async ValueTask<List<Consumer>> GetAllUserAsync()
         {
             return await _userManager.Users.ToListAsync();
         }

@@ -37,20 +37,20 @@ class App
         return subscriptions;
     }
 
-    public static List<ApplicationUser> GenerateUser()
+    public static List<Consumer> GenerateUser()
     {
-        return new List<ApplicationUser>
+        return new List<Consumer>
         {
-            new ApplicationUser {Address = "Cairo" ,UserName = "AhmedSalah", Email = "user1@example.com",PasswordHash = "Ahmed123" , Balance = new Balance(){ CreatedAt = DateTime.Now ,Amount = 0 } },
-            new ApplicationUser {Address = "Zagazig" ,UserName = "user2@example.com", Email = "user2@example.com" ,PasswordHash = "Ahmed123", Balance = new Balance(){ CreatedAt = DateTime.Now ,Amount = 0 ,}},
-            new ApplicationUser {Address = "Cairo" ,UserName = "user3@example.com", Email = "user3@example.com" ,PasswordHash = "Ahmed123", Balance = new Balance(){ CreatedAt = DateTime.Now ,Amount = 0 ,}},
-            new ApplicationUser {Address = "Mansoura" ,UserName = "user4@example.com", Email = "user4@example.com" ,PasswordHash = "Ahmed123", Balance = new Balance() { CreatedAt = DateTime.Now, Amount = 0 }},
-            new ApplicationUser {Address = "Cairo" ,UserName = "user5@example.com", Email = "user5@example.com" ,PasswordHash = "Ahmed123", Balance = new Balance() { CreatedAt = DateTime.Now, Amount = 0 }},
-            new ApplicationUser {Address = "Sudia" ,UserName = "user6@example.com", Email = "user6@example.com" ,PasswordHash = "Ahmed123", Balance = new Balance() { CreatedAt = DateTime.Now, Amount = 0 }},
-            new ApplicationUser {Address = "Cairo" ,UserName = "user7@example.com", Email = "user7@example.com" ,PasswordHash = "Ahmed123", Balance = new Balance() { CreatedAt = DateTime.Now, Amount = 0 }},
-            new ApplicationUser {Address = "Emirat" ,UserName = "user8@example.com", Email = "user8@example.com" ,PasswordHash = "Ahmed123", Balance = new Balance() { CreatedAt = DateTime.Now, Amount = 0 }},
-            new ApplicationUser {Address = "US" ,UserName = "user9@example.com", Email = "user9@example.com" ,PasswordHash = "Ahmed123", Balance = new Balance() { CreatedAt = DateTime.Now, Amount = 0 }},
-            new ApplicationUser {Address = "Cairo" ,UserName = "user10@example.com", Email = "user10@example.com" ,PasswordHash = "Ahmed123", Balance = new Balance() { CreatedAt = DateTime.Now, Amount = 0 }}
+            new Consumer {Address = "Cairo" ,UserName = "AhmedSalah", Email = "user1@example.com",PasswordHash = "Ahmed123" , Balance = new Balance(){ CreatedAt = DateTime.Now ,Amount = 0 } },
+            new Consumer {Address = "Zagazig" ,UserName = "user2@example.com", Email = "user2@example.com" ,PasswordHash = "Ahmed123", Balance = new Balance(){ CreatedAt = DateTime.Now ,Amount = 0 ,}},
+            new Consumer {Address = "Cairo" ,UserName = "user3@example.com", Email = "user3@example.com" ,PasswordHash = "Ahmed123", Balance = new Balance(){ CreatedAt = DateTime.Now ,Amount = 0 ,}},
+            new Consumer {Address = "Mansoura" ,UserName = "user4@example.com", Email = "user4@example.com" ,PasswordHash = "Ahmed123", Balance = new Balance() { CreatedAt = DateTime.Now, Amount = 0 }},
+            new Consumer {Address = "Cairo" ,UserName = "user5@example.com", Email = "user5@example.com" ,PasswordHash = "Ahmed123", Balance = new Balance() { CreatedAt = DateTime.Now, Amount = 0 }},
+            new Consumer {Address = "Sudia" ,UserName = "user6@example.com", Email = "user6@example.com" ,PasswordHash = "Ahmed123", Balance = new Balance() { CreatedAt = DateTime.Now, Amount = 0 }},
+            new Consumer {Address = "Cairo" ,UserName = "user7@example.com", Email = "user7@example.com" ,PasswordHash = "Ahmed123", Balance = new Balance() { CreatedAt = DateTime.Now, Amount = 0 }},
+            new Consumer {Address = "Emirat" ,UserName = "user8@example.com", Email = "user8@example.com" ,PasswordHash = "Ahmed123", Balance = new Balance() { CreatedAt = DateTime.Now, Amount = 0 }},
+            new Consumer {Address = "US" ,UserName = "user9@example.com", Email = "user9@example.com" ,PasswordHash = "Ahmed123", Balance = new Balance() { CreatedAt = DateTime.Now, Amount = 0 }},
+            new Consumer {Address = "Cairo" ,UserName = "user10@example.com", Email = "user10@example.com" ,PasswordHash = "Ahmed123", Balance = new Balance() { CreatedAt = DateTime.Now, Amount = 0 }}
         };
     }
     public static List<Withdrawals> GenerateWithdrawals()

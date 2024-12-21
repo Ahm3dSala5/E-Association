@@ -16,13 +16,13 @@ namespace E_Association.Service.AssociationServices.Userservice
     public class AuthonticationService : IAuthenticationService
     {
         private readonly IEmailSender _emailSender;
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly UserManager<Consumer> _userManager;
         private readonly IConfiguration _config;
         private readonly IBalanceServices _balance;
         private AppDbContext _app;
        
         public AuthonticationService
-            (AppDbContext app,IConfiguration config ,IEmailSender emailSender,UserManager<ApplicationUser> userManager ,IBalanceServices balance)
+            (AppDbContext app,IConfiguration config ,IEmailSender emailSender,UserManager<Consumer> userManager ,IBalanceServices balance)
         {
             this._balance = balance;
             this._config = config;
@@ -36,7 +36,7 @@ namespace E_Association.Service.AssociationServices.Userservice
             Balance balance = new Balance() { Amount = 0 };
             await _balance.CreateBalanceAsync(balance);
            
-            var applicationUser = new ApplicationUser
+            var applicationUser = new Consumer
             {
                 UserName = register.UserName,
                 Email = register.Email,

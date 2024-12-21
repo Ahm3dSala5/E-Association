@@ -13,12 +13,10 @@ namespace E_Association.Core.Features.Notification.Command.Handler
         IRequestHandler<SendNotificationToAllUserCommand, string> ,
         IRequestHandler<SendNotificationToAssociationConsumersCommand, string> 
     {
-        private IMapper _mapper;
         private IUnitOfWork _service;
-        public NotificationCommandHandler(IUnitOfWork service ,IMapper mapper)
+        public NotificationCommandHandler(IUnitOfWork service )
         {
             this._service = service;
-            this._mapper = mapper;
         }
         public async Task<string> Handle(CreateNotificationCommand request, CancellationToken cancellationToken)
         {

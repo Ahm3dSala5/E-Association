@@ -7,7 +7,6 @@ namespace E_Association.Core.Mapping.Transaction
         public BalanceProfile()
         {
             AddStartTransactionMapping();
-            AddDeleteTransactionMapping();
             AddUpdateTransactionMapping();
             AddGetTransactionByIdMapping();
             AddGetAllTransactionMapping();

@@ -6,9 +6,6 @@ namespace E_Association.Core.Mapping.Deposits
     {
         public DepositProfile()
         {
-            AddStartDepositMapping();
-            AddDeleteDepositMapping();
-            AddUpdateDepositMapping();
             AddGetDepositDetailsMapping();
             AddGetAllDepositsMapping();
             AddGetUserDepositsMapping();

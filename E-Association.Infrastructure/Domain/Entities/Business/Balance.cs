@@ -8,8 +8,8 @@ namespace Domain.Entities.Business
         public decimal Amount { set; get; }
         public string Password { set; get; }
         public DateTime CreatedAt { set; get; }
-        public Guid UserId { get; set; }
-        public ApplicationUser User { set; get; }
+        public Guid ? UserId { get; set; }
+        public Consumer ?User { set; get; }
 
         public ICollection<Withdrawals> Withdrawals = new List<Withdrawals>();
 

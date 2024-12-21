@@ -11,7 +11,7 @@ namespace SubScriptions.Infrastructure.Repositoty
 {
     public static class TokenHelper
     {
-        public static object GenerateToken(IConfiguration _config,ApplicationUser user)
+        public static object GenerateToken(IConfiguration _config,Consumer user)
         {
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["JWT:Key"]!));
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
@@ -41,7 +41,7 @@ namespace SubScriptions.Infrastructure.Repositoty
         }
 
         public static async ValueTask<string>  GenerateVerificationCode
-            (IEmailSender _emailSender, UserManager<ApplicationUser>_userManager,ApplicationUser applicationUser)
+            (IEmailSender _emailSender, UserManager<Consumer>_userManager,Consumer applicationUser)
         {
 
             var confirmationCode = new Random().Next(100000, 999999).ToString();

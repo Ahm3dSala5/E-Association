@@ -7,9 +7,9 @@ namespace Domain.Entities.Business
         public Guid Id { set; get; }
         public decimal Amount { set; get; }
         public DateTime DepositedAt { set; get; }
-        public Guid UserId { set; get; }
-        public Balance Balance { set; get; }
-        public Guid BalanceId { set; get; }
-        public ApplicationUser User { set; get; }
+        public Guid? UserId { set; get; }
+        public Balance ?Balance { set; get; }
+        public Guid ?BalanceId { set; get; }
+        public Consumer? User { set; get; }
     }
 }

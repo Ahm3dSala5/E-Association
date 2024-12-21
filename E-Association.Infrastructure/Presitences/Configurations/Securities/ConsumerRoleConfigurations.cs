@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Presitences.Configurations.Securities
 {
-    public class ApplicationUserRoleConfigurations : IEntityTypeConfiguration<IdentityUserRole<Guid>>
+    public class ConsumerRoleConfigurations : IEntityTypeConfiguration<IdentityUserRole<Guid>>
     {
         public void Configure(EntityTypeBuilder<IdentityUserRole<Guid>> builder)
         {
@@ -14,7 +14,7 @@ namespace Presitences.Configurations.Securities
 
             // No direct navigation properties exist in IdentityUserRole<string>.
             // Configure relationships with ApplicationUser and ApplicationRole.
-            builder.HasOne<ApplicationUser>()
+            builder.HasOne<Consumer>()
                 .WithMany(u => u.UserRoles)
                 .HasForeignKey(ur => ur.UserId)
                 .OnDelete(DeleteBehavior.Cascade);

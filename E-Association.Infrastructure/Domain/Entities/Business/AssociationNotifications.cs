@@ -1,6 +1,6 @@
 ﻿namespace Domain.Entities.Business
 {
-    public class SubscriptionNotifications
+    public class AssociationNotifications
     {
         public Guid SubScriptionId { set; get; }
         public Association SubScription { set; get; }

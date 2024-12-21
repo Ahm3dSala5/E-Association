@@ -2,12 +2,11 @@
 
 namespace Domain.Entities.Business
 {
-    public class UserSubscriptions
+    public class ConsumerAssociations
     {
         public Guid UserId { set; get; }
-        public ApplicationUser User { set; get; }
+        public Consumer User { set; get; }
         public Guid SubscriptionId { set; get; }
-        public Association SubScription { set; get; }
-
+        public Association Association { set; get; }
     }
 }

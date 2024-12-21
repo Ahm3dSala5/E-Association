@@ -19,7 +19,7 @@ namespace Presitences.Configurations.Business
             //create relationship many to many
             builder.HasMany(x => x.Subscriptions)
                 .WithMany(x => x.Notifications)
-                .UsingEntity<SubscriptionNotifications>
+                .UsingEntity<AssociationNotifications>
                 (
                 join => join.
                   HasOne(x => x.SubScription).

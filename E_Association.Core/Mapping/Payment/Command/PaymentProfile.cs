@@ -6,19 +6,9 @@ namespace E_Association.Core.Mapping.Payments
 {
     public partial class PaymentProfile 
     {
-        public void AddStartPaymentMapping()
-        {
-            CreateMap<Payment,StartPaymentCommand>();
-        }
-
         public void AddUpdatePaymentMapping()
         {
             CreateMap<Payment,UpdatePaymentCommand>();
-        }
-
-        public void AddCancellationPaymentMapping()
-        {
-            CreateMap<Payment,CancellationPaymentCommand>();
         }
     }
 }

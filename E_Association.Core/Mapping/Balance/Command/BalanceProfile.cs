@@ -12,11 +12,6 @@ namespace E_Association.Core.Mapping.Balances
             CreateMap<Balance, CreateBalanceCommand>();
         }
 
-        public void AddDeleteBalanceMapping()
-        {
-            CreateMap<Transactions,DeleteBalanceCommand>();
-        }
-
         public void AddUpdateBalanceMapping()
         {
             CreateMap<Balance, UpdateBalanceCommand>();

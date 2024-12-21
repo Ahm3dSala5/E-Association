@@ -9,9 +9,9 @@ namespace E_Association.Service.AssociationServices.Userservice
     public class AuthorizationService : IAuthorizationService
     {
         private readonly RoleManager<ApplicationRole> roleManager;
-        private readonly UserManager<ApplicationUser> userManager;
+        private readonly UserManager<Consumer> userManager;
 
-        public AuthorizationService(RoleManager<ApplicationRole> _userManager, UserManager<ApplicationUser> userManager)
+        public AuthorizationService(RoleManager<ApplicationRole> _userManager, UserManager<Consumer> userManager)
         {
             this.roleManager = _userManager;
             this.userManager = userManager;

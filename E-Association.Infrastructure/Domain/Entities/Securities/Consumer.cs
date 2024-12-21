@@ -2,12 +2,12 @@
 using Microsoft.AspNetCore.Identity;
 namespace Domain.Entities.Securities
 {
-    public class ApplicationUser : IdentityUser<Guid>
+    public class Consumer : IdentityUser<Guid>
     {
         public string Address { set; get; }
         public ICollection<Deposit> Deposites { set; get; } = new List<Deposit>();
         public ICollection<Association> SubScriptions { set; get; } = new List<Association>();
-        public ICollection<UserSubscriptions> UserSubscriptions { set; get; } = new List<UserSubscriptions>();
+        public ICollection<ConsumerAssociations> UserSubscriptions { set; get; } = new List<ConsumerAssociations>();
         public ICollection<Withdrawals> Withdrawals { set; get; } = new List<Withdrawals>();
         public ICollection<Payment> Payments { set; get; } = new List<Payment>();
         public ICollection<Notifications> Notifications { set; get; } = new List<Notifications>();

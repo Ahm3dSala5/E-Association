@@ -16,10 +16,10 @@ namespace Domain.Entities.Business
         public DateTime StartAt { set; get; }
         public DateTime EndAt { set; get; }
         
-        public ICollection<ApplicationUser> Users { set; get; } = new List<ApplicationUser>();
-        public ICollection<UserSubscriptions> UserSubscriptions { set; get; } = new List<UserSubscriptions>();
+        public ICollection<Consumer> Users { set; get; } = new List<Consumer>();
+        public ICollection<ConsumerAssociations> UserSubscriptions { set; get; } = new List<ConsumerAssociations>();
         public ICollection<Notifications> Notifications { set; get; } = new List<Notifications>();
-        public ICollection<SubscriptionNotifications> SubscriptionNotifications { set; get; } = new List<SubscriptionNotifications>();
+        public ICollection<AssociationNotifications> SubscriptionNotifications { set; get; } = new List<AssociationNotifications>();
         public ICollection<Payment> Payments { set; get; } = new List<Payment>();
     }
    

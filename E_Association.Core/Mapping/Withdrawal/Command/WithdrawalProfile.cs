@@ -7,19 +7,9 @@ namespace E_Association.Core.Mapping.Withdrawal
 {
     public partial class WithdrawalProfile 
     {
-        public void AddStartwithdrawalsMapping()
-        {
-            CreateMap<Withdrawals, StartWithdrawalCommand>();
-        }
-
         public void AddUpdatewithdrawalsMapping()
         {
             CreateMap<Withdrawals, UpdateWithdrawalCommand>();
-        }
-
-        public void AddCalncelationWithdrwalsMapping()
-        {
-            CreateMap<Withdrawals, CalncelationWithdrwalCommand>();
         }
     }
 }

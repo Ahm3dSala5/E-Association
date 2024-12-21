@@ -6,9 +6,7 @@ namespace E_Association.Core.Mapping.Payments
     {
         public PaymentProfile()
         {
-            AddStartPaymentMapping();
             AddUpdatePaymentMapping();
-            AddCancellationPaymentMapping();
             AddGetUserPaymentMapping();
             AddGetAssociationPaymentMapping();
         }

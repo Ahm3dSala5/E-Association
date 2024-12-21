@@ -11,7 +11,7 @@ namespace Domain.Entities.Business
         public DateTime PaidAt { set; get; }
         public Guid ?UserId { set; get; }
         public Guid ?AssociationId { set; get; }
-        public ApplicationUser ?User { set; get; }
+        public Consumer ?User { set; get; }
         public Association ?Association { set; get; }
     }
 }

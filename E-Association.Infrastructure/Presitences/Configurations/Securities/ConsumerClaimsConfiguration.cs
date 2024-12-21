@@ -5,17 +5,16 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Presitences.Configurations.Securities
 {
-    public class ApplicationUserClaimsConfiguration : IEntityTypeConfiguration<IdentityUserClaim<Guid>>
+    public class ConsumerClaimsConfiguration : IEntityTypeConfiguration<IdentityUserClaim<Guid>>
     {
         public void Configure(EntityTypeBuilder<IdentityUserClaim<Guid>> builder)
         {
             builder.HasKey(x => new { x.UserId, x.Id });
 
-            builder.HasOne<ApplicationUser>()
+            builder.HasOne<Consumer>()
                 .WithMany(x => x.Claims)
                 .HasForeignKey(x => x.UserId)
                 .IsRequired();
-
         }
     }
 }
