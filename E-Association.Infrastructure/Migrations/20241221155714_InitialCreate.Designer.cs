@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EAssociation.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241210124931_Initial")]
-    partial class Initial
+    [Migration("20241221155714_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,60 @@ namespace EAssociation.Infrastructure.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("Domain.Entities.Business.Association", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Applicants")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Capacity")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("Collector")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("EndAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("MonthlyAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("StartAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("TotalBalance")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Association", (string)null);
+                });
+
+            modelBuilder.Entity("Domain.Entities.Business.AssociationNotifications", b =>
+                {
+                    b.Property<Guid>("SubScriptionId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("NotificationsId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("SubScriptionId", "NotificationsId");
+
+                    b.HasIndex("NotificationsId");
+
+                    b.ToTable("AssociationNotifications", (string)null);
+                });
 
             modelBuilder.Entity("Domain.Entities.Business.Balance", b =>
                 {
@@ -37,18 +91,62 @@ namespace EAssociation.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<decimal>("Deposit")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("UserId")
+                    b.Property<Guid?>("UserId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<decimal>("Withdrawal")
-                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 
                     b.ToTable("Balance", (string)null);
+                });
+
+            modelBuilder.Entity("Domain.Entities.Business.ConsumerAssociations", b =>
+                {
+                    b.Property<Guid>("UserId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("User_Number");
+
+                    b.Property<Guid>("SubscriptionId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("Subscription_Number");
+
+                    b.HasKey("UserId", "SubscriptionId");
+
+                    b.HasIndex("SubscriptionId");
+
+                    b.ToTable("ConsumerAssociations", (string)null);
+                });
+
+            modelBuilder.Entity("Domain.Entities.Business.Deposit", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<Guid?>("BalanceId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("DepositedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BalanceId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Deposit", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Business.Notifications", b =>
@@ -84,6 +182,9 @@ namespace EAssociation.Infrastructure.Migrations
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<Guid?>("AssociationId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<DateTime>("PaidAt")
                         .HasColumnType("datetime2");
 
@@ -95,63 +196,20 @@ namespace EAssociation.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AssociationId");
+
                     b.HasIndex("UserId");
 
                     b.ToTable("Payment", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.Entities.Business.SubScription", b =>
+            modelBuilder.Entity("Domain.Entities.Business.Transactions", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("Capacity")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("EndAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<decimal>("MonthlyAmount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("StartAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("SubScription", (string)null);
-                });
-
-            modelBuilder.Entity("Domain.Entities.Business.SubscriptionNotifications", b =>
-                {
-                    b.Property<Guid>("SubScriptionId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("NotificationsId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("SubScriptionId", "NotificationsId");
-
-                    b.HasIndex("NotificationsId");
-
-                    b.ToTable("SubscriptionNotifications", (string)null);
-                });
-
-            modelBuilder.Entity("Domain.Entities.Business.Transaction", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("BalanceId")
+                    b.Property<Guid?>("BalanceId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Salary")
@@ -172,25 +230,6 @@ namespace EAssociation.Infrastructure.Migrations
                     b.ToTable("Transaction", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.Entities.Business.UserSubscriptions", b =>
-                {
-                    b.Property<Guid>("UserId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("User_Number");
-
-                    b.Property<Guid>("SubscriptionId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("Subscription_Number");
-
-                    b.HasKey("UserId", "SubscriptionId");
-
-                    b.HasIndex("SubscriptionId");
-
-                    b.ToTable("UserSubscriptions", (string)null);
-                });
-
             modelBuilder.Entity("Domain.Entities.Business.Withdrawals", b =>
                 {
                     b.Property<Guid>("Id")
@@ -199,6 +238,9 @@ namespace EAssociation.Infrastructure.Migrations
 
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<Guid?>("BalanceId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
@@ -211,12 +253,14 @@ namespace EAssociation.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("BalanceId");
+
                     b.HasIndex("UserId");
 
                     b.ToTable("Withdrawals", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.Entities.Securities.ApplicationUser", b =>
+            modelBuilder.Entity("Domain.Entities.Securities.Consumer", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -229,7 +273,7 @@ namespace EAssociation.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("BalanceId")
+                    b.Property<Guid?>("BalanceId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ConcurrencyStamp")
@@ -274,9 +318,10 @@ namespace EAssociation.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("BalanceId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[BalanceId] IS NOT NULL");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Consumer", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", b =>
@@ -411,27 +456,7 @@ namespace EAssociation.Infrastructure.Migrations
                     b.HasDiscriminator().HasValue("ApplicationRole");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Business.Notifications", b =>
-                {
-                    b.HasOne("Domain.Entities.Securities.ApplicationUser", "User")
-                        .WithMany("Notifications")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Business.Payment", b =>
-                {
-                    b.HasOne("Domain.Entities.Securities.ApplicationUser", "User")
-                        .WithMany("Payments")
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Business.SubscriptionNotifications", b =>
+            modelBuilder.Entity("Domain.Entities.Business.AssociationNotifications", b =>
                 {
                     b.HasOne("Domain.Entities.Business.Notifications", "Notification")
                         .WithMany("SubscriptionNotifications")
@@ -439,7 +464,7 @@ namespace EAssociation.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.Entities.Business.SubScription", "SubScription")
+                    b.HasOne("Domain.Entities.Business.Association", "SubScription")
                         .WithMany("SubscriptionNotifications")
                         .HasForeignKey("SubScriptionId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -450,16 +475,33 @@ namespace EAssociation.Infrastructure.Migrations
                     b.Navigation("SubScription");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Business.Transaction", b =>
+            modelBuilder.Entity("Domain.Entities.Business.ConsumerAssociations", b =>
                 {
-                    b.HasOne("Domain.Entities.Business.Balance", "Balance")
-                        .WithMany("Transactions")
-                        .HasForeignKey("BalanceId")
+                    b.HasOne("Domain.Entities.Business.Association", "Association")
+                        .WithMany("UserSubscriptions")
+                        .HasForeignKey("SubscriptionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.Entities.Securities.ApplicationUser", "User")
-                        .WithMany("Transactions")
+                    b.HasOne("Domain.Entities.Securities.Consumer", "User")
+                        .WithMany("UserSubscriptions")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Association");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Business.Deposit", b =>
+                {
+                    b.HasOne("Domain.Entities.Business.Balance", "Balance")
+                        .WithMany("Deposits")
+                        .HasForeignKey("BalanceId");
+
+                    b.HasOne("Domain.Entities.Securities.Consumer", "User")
+                        .WithMany("Deposites")
                         .HasForeignKey("UserId");
 
                     b.Navigation("Balance");
@@ -467,46 +509,74 @@ namespace EAssociation.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Business.UserSubscriptions", b =>
+            modelBuilder.Entity("Domain.Entities.Business.Notifications", b =>
                 {
-                    b.HasOne("Domain.Entities.Business.SubScription", "SubScription")
-                        .WithMany("UserSubscriptions")
-                        .HasForeignKey("SubscriptionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Entities.Securities.ApplicationUser", "User")
-                        .WithMany("UserSubscriptions")
+                    b.HasOne("Domain.Entities.Securities.Consumer", "User")
+                        .WithMany("Notifications")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("SubScription");
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Business.Payment", b =>
+                {
+                    b.HasOne("Domain.Entities.Business.Association", "Association")
+                        .WithMany("Payments")
+                        .HasForeignKey("AssociationId");
+
+                    b.HasOne("Domain.Entities.Securities.Consumer", "User")
+                        .WithMany("Payments")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Association");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Business.Transactions", b =>
+                {
+                    b.HasOne("Domain.Entities.Business.Balance", "Balance")
+                        .WithMany("Transactions")
+                        .HasForeignKey("BalanceId");
+
+                    b.HasOne("Domain.Entities.Securities.Consumer", "User")
+                        .WithMany("Transactions")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Balance");
 
                     b.Navigation("User");
                 });
 
             modelBuilder.Entity("Domain.Entities.Business.Withdrawals", b =>
                 {
-                    b.HasOne("Domain.Entities.Securities.ApplicationUser", "ApplicationUser")
+                    b.HasOne("Domain.Entities.Business.Balance", "Balance")
+                        .WithMany("Withdrawals")
+                        .HasForeignKey("BalanceId");
+
+                    b.HasOne("Domain.Entities.Securities.Consumer", "ApplicationUser")
                         .WithMany("Withdrawals")
                         .HasForeignKey("UserId");
 
                     b.Navigation("ApplicationUser");
+
+                    b.Navigation("Balance");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Securities.ApplicationUser", b =>
+            modelBuilder.Entity("Domain.Entities.Securities.Consumer", b =>
                 {
                     b.HasOne("Domain.Entities.Business.Balance", "Balance")
                         .WithOne("User")
-                        .HasForeignKey("Domain.Entities.Securities.ApplicationUser", "BalanceId");
+                        .HasForeignKey("Domain.Entities.Securities.Consumer", "BalanceId");
 
                     b.Navigation("Balance");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
                 {
-                    b.HasOne("Domain.Entities.Securities.ApplicationUser", null)
+                    b.HasOne("Domain.Entities.Securities.Consumer", null)
                         .WithMany("Claims")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -515,7 +585,7 @@ namespace EAssociation.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
                 {
-                    b.HasOne("Domain.Entities.Securities.ApplicationUser", null)
+                    b.HasOne("Domain.Entities.Securities.Consumer", null)
                         .WithMany("Logins")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -530,7 +600,7 @@ namespace EAssociation.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.Entities.Securities.ApplicationUser", null)
+                    b.HasOne("Domain.Entities.Securities.Consumer", null)
                         .WithMany("UserRoles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -539,19 +609,31 @@ namespace EAssociation.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
                 {
-                    b.HasOne("Domain.Entities.Securities.ApplicationUser", null)
+                    b.HasOne("Domain.Entities.Securities.Consumer", null)
                         .WithMany("Tokens")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Domain.Entities.Business.Association", b =>
+                {
+                    b.Navigation("Payments");
+
+                    b.Navigation("SubscriptionNotifications");
+
+                    b.Navigation("UserSubscriptions");
+                });
+
             modelBuilder.Entity("Domain.Entities.Business.Balance", b =>
                 {
+                    b.Navigation("Deposits");
+
                     b.Navigation("Transactions");
 
-                    b.Navigation("User")
-                        .IsRequired();
+                    b.Navigation("User");
+
+                    b.Navigation("Withdrawals");
                 });
 
             modelBuilder.Entity("Domain.Entities.Business.Notifications", b =>
@@ -559,16 +641,11 @@ namespace EAssociation.Infrastructure.Migrations
                     b.Navigation("SubscriptionNotifications");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Business.SubScription", b =>
-                {
-                    b.Navigation("SubscriptionNotifications");
-
-                    b.Navigation("UserSubscriptions");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Securities.ApplicationUser", b =>
+            modelBuilder.Entity("Domain.Entities.Securities.Consumer", b =>
                 {
                     b.Navigation("Claims");
+
+                    b.Navigation("Deposites");
 
                     b.Navigation("Logins");
 

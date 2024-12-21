@@ -6,21 +6,40 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace EAssociation.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Association",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MonthlyAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Capacity = table.Column<int>(type: "int", nullable: false),
+                    Applicants = table.Column<int>(type: "int", nullable: false),
+                    TotalBalance = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Collector = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    StartAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Association", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Balance",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Deposit = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Withdrawal = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -58,29 +77,12 @@ namespace EAssociation.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "SubScription",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    MonthlyAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Capacity = table.Column<int>(type: "int", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: false),
-                    StartAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EndAt = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_SubScription", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Users",
+                name: "Consumer",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    BalanceId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    BalanceId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -98,11 +100,60 @@ namespace EAssociation.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.Id);
+                    table.PrimaryKey("PK_Consumer", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Users_Balance_BalanceId",
+                        name: "FK_Consumer_Balance_BalanceId",
                         column: x => x.BalanceId,
                         principalTable: "Balance",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ConsumerAssociations",
+                columns: table => new
+                {
+                    User_Number = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Subscription_Number = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ConsumerAssociations", x => new { x.User_Number, x.Subscription_Number });
+                    table.ForeignKey(
+                        name: "FK_ConsumerAssociations_Association_Subscription_Number",
+                        column: x => x.Subscription_Number,
+                        principalTable: "Association",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ConsumerAssociations_Consumer_User_Number",
+                        column: x => x.User_Number,
+                        principalTable: "Consumer",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Deposit",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    DepositedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    BalanceId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Deposit", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Deposit_Balance_BalanceId",
+                        column: x => x.BalanceId,
+                        principalTable: "Balance",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Deposit_Consumer_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Consumer",
                         principalColumn: "Id");
                 });
 
@@ -119,9 +170,9 @@ namespace EAssociation.Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_Notifications", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Notifications_Users_UserId",
+                        name: "FK_Notifications_Consumer_UserId",
                         column: x => x.UserId,
-                        principalTable: "Users",
+                        principalTable: "Consumer",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -134,15 +185,21 @@ namespace EAssociation.Infrastructure.Migrations
                     Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
                     PaidAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    AssociationId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Payment", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Payment_Users_UserId",
+                        name: "FK_Payment_Association_AssociationId",
+                        column: x => x.AssociationId,
+                        principalTable: "Association",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Payment_Consumer_UserId",
                         column: x => x.UserId,
-                        principalTable: "Users",
+                        principalTable: "Consumer",
                         principalColumn: "Id");
                 });
 
@@ -154,7 +211,7 @@ namespace EAssociation.Infrastructure.Migrations
                     Salary = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     StartedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    BalanceId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    BalanceId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -163,12 +220,11 @@ namespace EAssociation.Infrastructure.Migrations
                         name: "FK_Transaction_Balance_BalanceId",
                         column: x => x.BalanceId,
                         principalTable: "Balance",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Transaction_Users_UserId",
+                        name: "FK_Transaction_Consumer_UserId",
                         column: x => x.UserId,
-                        principalTable: "Users",
+                        principalTable: "Consumer",
                         principalColumn: "Id");
                 });
 
@@ -185,9 +241,9 @@ namespace EAssociation.Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_UserClaims", x => new { x.UserId, x.Id });
                     table.ForeignKey(
-                        name: "FK_UserClaims_Users_UserId",
+                        name: "FK_UserClaims_Consumer_UserId",
                         column: x => x.UserId,
-                        principalTable: "Users",
+                        principalTable: "Consumer",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -205,9 +261,9 @@ namespace EAssociation.Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_UserLogins", x => new { x.LoginProvider, x.ProviderKey });
                     table.ForeignKey(
-                        name: "FK_UserLogins_Users_UserId",
+                        name: "FK_UserLogins_Consumer_UserId",
                         column: x => x.UserId,
-                        principalTable: "Users",
+                        principalTable: "Consumer",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -223,39 +279,15 @@ namespace EAssociation.Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_UserRoles", x => new { x.UserId, x.RoleId });
                     table.ForeignKey(
+                        name: "FK_UserRoles_Consumer_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Consumer",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
                         name: "FK_UserRoles_Roles_RoleId",
                         column: x => x.RoleId,
                         principalTable: "Roles",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_UserRoles_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "UserSubscriptions",
-                columns: table => new
-                {
-                    User_Number = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Subscription_Number = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserSubscriptions", x => new { x.User_Number, x.Subscription_Number });
-                    table.ForeignKey(
-                        name: "FK_UserSubscriptions_SubScription_Subscription_Number",
-                        column: x => x.Subscription_Number,
-                        principalTable: "SubScription",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_UserSubscriptions_Users_User_Number",
-                        column: x => x.User_Number,
-                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -273,9 +305,9 @@ namespace EAssociation.Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_UserTokens", x => new { x.UserId, x.LoginProvider, x.Name });
                     table.ForeignKey(
-                        name: "FK_UserTokens_Users_UserId",
+                        name: "FK_UserTokens_Consumer_UserId",
                         column: x => x.UserId,
-                        principalTable: "Users",
+                        principalTable: "Consumer",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -288,20 +320,26 @@ namespace EAssociation.Infrastructure.Migrations
                     Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
                     WithdrawalAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    BalanceId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Withdrawals", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Withdrawals_Users_UserId",
+                        name: "FK_Withdrawals_Balance_BalanceId",
+                        column: x => x.BalanceId,
+                        principalTable: "Balance",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Withdrawals_Consumer_UserId",
                         column: x => x.UserId,
-                        principalTable: "Users",
+                        principalTable: "Consumer",
                         principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "SubscriptionNotifications",
+                name: "AssociationNotifications",
                 columns: table => new
                 {
                     SubScriptionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -309,20 +347,47 @@ namespace EAssociation.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SubscriptionNotifications", x => new { x.SubScriptionId, x.NotificationsId });
+                    table.PrimaryKey("PK_AssociationNotifications", x => new { x.SubScriptionId, x.NotificationsId });
                     table.ForeignKey(
-                        name: "FK_SubscriptionNotifications_Notifications_NotificationsId",
+                        name: "FK_AssociationNotifications_Association_SubScriptionId",
+                        column: x => x.SubScriptionId,
+                        principalTable: "Association",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_AssociationNotifications_Notifications_NotificationsId",
                         column: x => x.NotificationsId,
                         principalTable: "Notifications",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_SubscriptionNotifications_SubScription_SubScriptionId",
-                        column: x => x.SubScriptionId,
-                        principalTable: "SubScription",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AssociationNotifications_NotificationsId",
+                table: "AssociationNotifications",
+                column: "NotificationsId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Consumer_BalanceId",
+                table: "Consumer",
+                column: "BalanceId",
+                unique: true,
+                filter: "[BalanceId] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ConsumerAssociations_Subscription_Number",
+                table: "ConsumerAssociations",
+                column: "Subscription_Number");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Deposit_BalanceId",
+                table: "Deposit",
+                column: "BalanceId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Deposit_UserId",
+                table: "Deposit",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Notifications_UserId",
@@ -330,14 +395,14 @@ namespace EAssociation.Infrastructure.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Payment_AssociationId",
+                table: "Payment",
+                column: "AssociationId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Payment_UserId",
                 table: "Payment",
                 column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_SubscriptionNotifications_NotificationsId",
-                table: "SubscriptionNotifications",
-                column: "NotificationsId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Transaction_BalanceId",
@@ -360,15 +425,9 @@ namespace EAssociation.Infrastructure.Migrations
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Users_BalanceId",
-                table: "Users",
-                column: "BalanceId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_UserSubscriptions_Subscription_Number",
-                table: "UserSubscriptions",
-                column: "Subscription_Number");
+                name: "IX_Withdrawals_BalanceId",
+                table: "Withdrawals",
+                column: "BalanceId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Withdrawals_UserId",
@@ -380,13 +439,19 @@ namespace EAssociation.Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "AssociationNotifications");
+
+            migrationBuilder.DropTable(
+                name: "ConsumerAssociations");
+
+            migrationBuilder.DropTable(
+                name: "Deposit");
+
+            migrationBuilder.DropTable(
                 name: "Payment");
 
             migrationBuilder.DropTable(
                 name: "RoleClaims");
-
-            migrationBuilder.DropTable(
-                name: "SubscriptionNotifications");
 
             migrationBuilder.DropTable(
                 name: "Transaction");
@@ -401,9 +466,6 @@ namespace EAssociation.Infrastructure.Migrations
                 name: "UserRoles");
 
             migrationBuilder.DropTable(
-                name: "UserSubscriptions");
-
-            migrationBuilder.DropTable(
                 name: "UserTokens");
 
             migrationBuilder.DropTable(
@@ -413,13 +475,13 @@ namespace EAssociation.Infrastructure.Migrations
                 name: "Notifications");
 
             migrationBuilder.DropTable(
+                name: "Association");
+
+            migrationBuilder.DropTable(
                 name: "Roles");
 
             migrationBuilder.DropTable(
-                name: "SubScription");
-
-            migrationBuilder.DropTable(
-                name: "Users");
+                name: "Consumer");
 
             migrationBuilder.DropTable(
                 name: "Balance");

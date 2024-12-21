@@ -13,11 +13,10 @@ class App
         {
             context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
-            context.Associations.AddRange(GenerateAssociations());
-            context.Users.AddRange(GenerateUser());
             context.SaveChanges();
         }
     }
+   
 
     public static List<Association> GenerateAssociations()
     {
@@ -57,8 +56,7 @@ class App
     {
         return new List<Withdrawals>()
         {
-            new Withdrawals(){ Amount = 10},
+            new Withdrawals() { Amount = 10},
         };
     }
-   
 }
