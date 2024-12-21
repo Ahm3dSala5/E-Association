@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MediatR" Version="12.4.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\E-Association.Infrastructure\E-Association.Infrastructure.csproj" />
+    <ProjectReference Include="..\E-Association.Service\E-Association.Service.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Features\Authorization\Query\Model\" />
+    <Folder Include="Features\Consumer\Comand\" />
+    <Folder Include="Features\Withdrawal\Query\Handler\" />
+    <Folder Include="Features\Withdrawal\Query\Request\" />
+    <Folder Include="Features\Withdrawal\Query\Models\" />
+  </ItemGroup>
+
+</Project>
