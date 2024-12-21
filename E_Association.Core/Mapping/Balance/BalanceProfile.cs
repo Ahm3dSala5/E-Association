@@ -7,7 +7,6 @@ namespace E_Association.Core.Mapping.Balances
         public BalanceProfile()
         {
             AddCreateBalanceMapping();
-            AddDeleteBalanceMapping();
             AddUpdateBalanceMapping();
             AddGetBalanceDetailsMapping();
             AddGetalanceTransactionsMapping();
